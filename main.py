@@ -50,7 +50,8 @@ async def predict(file: UploadFile = File(...)):
     img = Image.open(BytesIO(image_bytes)).convert("RGB")
     img = img.resize((128, 128))  # Redimensionar a la entrada esperada por el modelo
     # Convertir la imagen en un array
-    img_array = image.img_to_array(img)
+    img_array = np.array(img, dtype=np.float32) / 255.0
+
     img_array = tf.expand_dims(img_array, 0)  # Agregar la dimensión del lote
 
     # Hacer la predicción
@@ -84,7 +85,8 @@ async def predict(file: UploadFile = File(...)):
 
     return {
         "probability": valor_max,
-        "predicted_class_name": clave_max
+        "predicted_class_name": clave_max,
+        "all_probabilities": probabilities_dict
     }
 
 if __name__ == "__main__":
