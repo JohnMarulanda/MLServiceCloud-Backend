@@ -58,7 +58,30 @@ async def predict(file: UploadFile = File(...)):
     
     # Obtener la clase predicha
     predicted_class = np.argmax(predictions[0], axis=-1)
-    return {"class": int(predicted_class)}
+    
+    # Diccionario de clases
+    class_dict = {
+        0: "rain",
+        1: "snow",
+        2: "sandstorm",
+        3: "rime",
+        4: "dew",
+        5: "fogsmog",
+        6: "frost",
+        7: "hail",
+        8: "glaze",
+        9: "rainbow",
+        10: "lightning"
+    }
+    
+    # Crear el diccionario de salida con las probabilidades
+    probabilities_dict = {class_dict[i]: float(predictions[0][i]) for i in range(len(predictions[0]))}
+    
+    return {
+        "probabilities": probabilities_dict,
+        "predicted_class_index": int(predicted_class),
+        "predicted_class_name": class_dict[int(predicted_class)]
+    }
 
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8000)
