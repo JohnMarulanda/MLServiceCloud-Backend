@@ -3,3 +3,4 @@ venv
 .env
 modelo_entrenado
 modelo_entrenado.zip
+__pycache__
