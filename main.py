@@ -1,12 +1,40 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, Request, HTTPException, File, UploadFile
 from tensorflow.keras.preprocessing import image
 import tensorflow as tf
 import numpy as np
 import uvicorn
 from io import BytesIO
 from PIL import Image
+from dotenv import load_dotenv
+import os
+from fastapi.middleware.cors import CORSMiddleware
+# Cargar variables de entorno desde .env
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
+
+if not API_KEY:
+    raise ValueError("API_KEY no encontrada en el archivo .env")
 
 app = FastAPI()
+
+# Configuración de CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"]
+)
+
+# Middleware para validar API_KEY
+@app.middleware("http")
+async def api_key_validator(request: Request, call_next):
+    api_key = request.headers.get("Authorization")
+    if api_key != API_KEY:
+        raise HTTPException(status_code=401, detail="API_KEY no válida o no proporcionada")
+    response = await call_next(request)
+    return response
 
 model = tf.keras.models.load_model('./modelo_entrenado')
 
@@ -14,7 +42,7 @@ model = tf.keras.models.load_model('./modelo_entrenado')
 async def home():
     return {"message": "Hello, World!"}
 
-#End point que recibe una imagen como parametro, hace un predict con el modelo convolucional de keras guardado con savemodel y retorna la clase predicha
+# End point que recibe una imagen como parámetro, hace un predict con el modelo convolucional de keras guardado con savemodel y retorna la clase predicha
 @app.post("/predict/")
 async def predict(file: UploadFile = File(...)):
     # Leer la imagen directamente desde la memoria
@@ -31,9 +59,6 @@ async def predict(file: UploadFile = File(...)):
     # Obtener la clase predicha
     predicted_class = np.argmax(predictions[0], axis=-1)
     return {"class": int(predicted_class)}
-
-
-
 
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8000)
