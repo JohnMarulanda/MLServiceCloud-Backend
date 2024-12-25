@@ -56,8 +56,6 @@ async def predict(file: UploadFile = File(...)):
     # Hacer la predicción
     predictions = model.predict(img_array)
 
-    print(predictions)
-    
     # Obtener la clase predicha
     predicted_class = np.argmax(predictions[0], axis=-1)
     
@@ -84,9 +82,6 @@ async def predict(file: UploadFile = File(...)):
     # Obtener el valor máximo
     valor_max = probabilities_dict[clave_max]
 
-    print(valor_max)
-    print(clave_max)
-    
     return {
         "probability": valor_max,
         "predicted_class_name": clave_max
