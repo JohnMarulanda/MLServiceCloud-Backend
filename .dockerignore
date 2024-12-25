@@ -1,0 +1,6 @@
+.env
+Pipfile
+Pipfile.lock
+README.md
+modelo_entrenado.zip
+__pycache__
