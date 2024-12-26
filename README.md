@@ -73,6 +73,10 @@ docker run -p 8000:8000 mlservice-backend
 ## ☁️ Cloud Deployment
 This service is deployed on Google Cloud Platform using Google Cloud Run for scalable, containerized deployment.
 
+URL: [https://imgclassifier-774604876933.us-east1.run.app/]
+
+**Remember that to test the API you need an API Key. Contact one of us to get one.**
+
 ## 🔌 API Endpoints
 
 - `POST /api/predict`
