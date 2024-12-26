@@ -70,6 +70,9 @@ docker build -t mlservice-backend .
 docker run -p 8000:8000 mlservice-backend
 ```
 
+## ☁️ Cloud Deployment
+This service is deployed on Google Cloud Platform using Google Cloud Run for scalable, containerized deployment.
+
 ## 🔌 API Endpoints
 
 - `POST /api/predict`
