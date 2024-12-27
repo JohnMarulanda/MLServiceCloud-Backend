@@ -86,7 +86,7 @@ URL: [https://imgclassifier-774604876933.us-east1.run.app/predict/]
 
 ## 🎥 Demo Video
 
-Check out our project demonstration video [here](video-link)! The video showcases the full functionality of our service and its integration with the frontend.
+Check out our project demonstration video [here]((https://youtu.be/lvb8Gw3CL24))! The video showcases the full functionality of our service and its integration with the frontend.
 
 ## 📝 Documentation
 
